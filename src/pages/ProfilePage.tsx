@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Edit3, Camera, Shield, LogOut, ChevronRight, Palette } from "lucide-react";
+import { Edit3, Camera, Shield, LogOut, ChevronRight, Palette, Settings } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ProfilePage() {
@@ -152,6 +152,20 @@ export default function ProfilePage() {
               </div>
               <ThemeToggle />
             </div>
+
+            {/* Admin Panel Link */}
+            <button 
+              onClick={() => navigate("/admin")}
+              className="w-full flex items-center justify-between p-4 rounded-2xl bg-primary/10 hover:bg-primary/20 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-primary" />
+                </div>
+                <span className="font-medium text-primary">Admin Panel</span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-primary" />
+            </button>
           </div>
         </Card>
         
