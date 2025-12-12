@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MobileLayout } from "@/components/MobileLayout";
 import { RoleBadge } from "@/components/RoleBadge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -14,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { User, Edit3, Camera, Shield, LogOut, ChevronRight } from "lucide-react";
+import { Edit3, Camera, Shield, LogOut, ChevronRight, Palette } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ProfilePage() {
@@ -140,6 +141,17 @@ export default function ProfilePage() {
                 </div>
               </DialogContent>
             </Dialog>
+
+            {/* Dark Mode Toggle */}
+            <div className="w-full flex items-center justify-between p-4 rounded-2xl bg-secondary/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-card rounded-xl flex items-center justify-center">
+                  <Palette className="w-5 h-5 text-foreground" />
+                </div>
+                <span className="font-medium text-foreground">Dark Mode</span>
+              </div>
+              <ThemeToggle />
+            </div>
           </div>
         </Card>
         
