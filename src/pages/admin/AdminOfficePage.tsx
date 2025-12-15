@@ -4,6 +4,7 @@ import { MobileLayout } from "@/components/MobileLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -13,10 +14,11 @@ import {
 } from "@/components/ui/select";
 import { 
   ArrowLeft, Building2, Power, Clock, Calendar, 
-  AlertTriangle, Shield, Zap, History
+  AlertTriangle, Shield, Zap, History, UserCheck
 } from "lucide-react";
 import { toast } from "sonner";
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip, BarChart, Bar } from "recharts";
+import { AdminAttendanceView } from "@/components/attendance/AdminAttendanceView";
 
 interface OfficeHistory {
   date: string;
@@ -64,6 +66,7 @@ export default function AdminOfficePage() {
   const [isOpen, setIsOpen] = useState(true);
   const [isOverride, setIsOverride] = useState(false);
   const [filterPeriod, setFilterPeriod] = useState("week");
+  const [activeTab, setActiveTab] = useState("controls");
 
   const handleToggleStatus = () => {
     setIsOpen(!isOpen);
@@ -112,225 +115,242 @@ export default function AdminOfficePage() {
           </div>
         </div>
 
-        <div className="px-4 pt-4 pb-6">
-          {/* Main Status Card */}
-          <Card className="p-6 rounded-3xl border-border mb-4 overflow-hidden relative">
-            {/* Background gradient */}
-            <div className={`absolute inset-0 opacity-5 ${isOpen ? 'bg-success' : 'bg-destructive'}`} />
-            
-            <div className="relative">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${isOpen ? 'bg-success/10' : 'bg-destructive/10'}`}>
-                    <Building2 className={`w-8 h-8 ${isOpen ? 'text-success' : 'text-destructive'}`} />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-foreground">
-                      {isOpen ? "Office Open" : "Office Closed"}
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                      {isOpen ? "Accepting visitors" : "Not accepting visitors"}
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full h-12 mb-4 p-1 rounded-2xl bg-secondary/80">
+            <TabsTrigger value="controls" className="flex-1 h-full rounded-xl gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm text-xs">
+              <Building2 className="w-4 h-4" />
+              Office
+            </TabsTrigger>
+            <TabsTrigger value="attendance" className="flex-1 h-full rounded-xl gap-2 data-[state=active]:bg-card data-[state=active]:shadow-sm text-xs">
+              <UserCheck className="w-4 h-4" />
+              Attendance
+            </TabsTrigger>
+          </TabsList>
 
-              {/* Toggle Switch */}
-              <div className="flex items-center justify-between p-4 rounded-2xl bg-secondary/50 mb-4">
-                <div className="flex items-center gap-3">
-                  <Power className={`w-5 h-5 ${isOpen ? 'text-success' : 'text-muted-foreground'}`} />
-                  <div>
-                    <p className="font-medium text-foreground">Office Status</p>
-                    <p className="text-xs text-muted-foreground">Toggle to open or close</p>
-                  </div>
-                </div>
-                <Switch
-                  checked={isOpen}
-                  onCheckedChange={handleToggleStatus}
-                  className="data-[state=checked]:bg-success"
-                />
-              </div>
-
-              {isOverride && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-warning/10 mb-4">
-                  <AlertTriangle className="w-4 h-4 text-warning" />
-                  <span className="text-sm text-warning font-medium flex-1">Override mode active</span>
-                  <button
-                    onClick={handleClearOverride}
-                    className="text-xs text-warning underline font-medium"
-                  >
-                    Clear
-                  </button>
-                </div>
-              )}
-
-              <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm text-foreground">
-                    {isOpen ? "Opened at 9:00 AM" : "Closed at 6:00 PM"}
-                  </p>
-                  <p className="text-xs text-muted-foreground">Regular hours: 9:00 AM - 6:00 PM</p>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Admin Override Controls */}
-          <Card className="p-4 rounded-2xl border-border mb-4">
-            <div className="flex items-center gap-2 mb-4">
-              <Shield className="w-5 h-5 text-primary" />
-              <h2 className="font-semibold text-foreground">Admin Override</h2>
-            </div>
-            <p className="text-xs text-muted-foreground mb-4">Force office status regardless of schedule</p>
-            <div className="flex gap-2">
-              <Button
-                onClick={handleForceOpen}
-                className="flex-1 h-12 rounded-xl bg-success hover:bg-success/90 gap-2"
-              >
-                <Zap className="w-4 h-4" />
-                Force Open
-              </Button>
-              <Button
-                onClick={handleForceClose}
-                variant="outline"
-                className="flex-1 h-12 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 gap-2"
-              >
-                <Power className="w-4 h-4" />
-                Force Close
-              </Button>
-            </div>
-          </Card>
-
-          {/* Activity Graph */}
-          <Card className="p-4 rounded-2xl border-border mb-4">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <History className="w-5 h-5 text-accent" />
-                <h3 className="font-semibold text-foreground">Today's Activity</h3>
-              </div>
-            </div>
-            <div className="h-32">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={activityData}>
-                  <XAxis 
-                    dataKey="time" 
-                    axisLine={false} 
-                    tickLine={false}
-                    tick={{ fontSize: 9, fill: 'hsl(var(--muted-foreground))' }}
-                  />
-                  <YAxis hide />
-                  <Tooltip
-                    contentStyle={{
-                      background: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '12px',
-                      fontSize: '12px'
-                    }}
-                  />
-                  <defs>
-                    <linearGradient id="colorOfficeActivity" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <Area 
-                    type="monotone" 
-                    dataKey="activity" 
-                    stroke="hsl(var(--accent))" 
-                    fill="url(#colorOfficeActivity)"
-                    strokeWidth={2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </Card>
-
-          {/* Weekly Hours Chart */}
-          <Card className="p-4 rounded-2xl border-border mb-4">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-primary" />
-                <h3 className="font-semibold text-foreground">Weekly Hours</h3>
-              </div>
-            </div>
-            <div className="h-32">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={weeklyData}>
-                  <XAxis 
-                    dataKey="day" 
-                    axisLine={false} 
-                    tickLine={false}
-                    tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
-                  />
-                  <YAxis hide />
-                  <Tooltip
-                    contentStyle={{
-                      background: 'hsl(var(--card))',
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '12px',
-                      fontSize: '12px'
-                    }}
-                    formatter={(value: number) => [`${value}h`, 'Hours']}
-                  />
-                  <Bar 
-                    dataKey="hours" 
-                    fill="hsl(var(--primary))" 
-                    radius={[4, 4, 0, 0]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </Card>
-
-          {/* History */}
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">History</h2>
-            <Select value={filterPeriod} onValueChange={setFilterPeriod}>
-              <SelectTrigger className="w-28 h-8 rounded-lg text-xs bg-secondary border-0">
-                <Calendar className="w-3 h-3 mr-1" />
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="week">This Week</SelectItem>
-                <SelectItem value="month">This Month</SelectItem>
-                <SelectItem value="all">All Time</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Card className="rounded-2xl border-border overflow-hidden">
-            <div className="divide-y divide-border">
-              {mockHistory.map((entry, index) => (
-                <div key={index} className="flex items-center justify-between p-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      entry.status === "override" ? 'bg-warning/10' : 'bg-secondary'
-                    }`}>
-                      <Clock className={`w-5 h-5 ${
-                        entry.status === "override" ? 'text-warning' : 'text-muted-foreground'
-                      }`} />
+          <TabsContent value="controls" className="mt-0">
+            {/* Main Status Card */}
+            <Card className="p-6 rounded-3xl border-border mb-4 overflow-hidden relative">
+              {/* Background gradient */}
+              <div className={`absolute inset-0 opacity-5 ${isOpen ? 'bg-success' : 'bg-destructive'}`} />
+              
+              <div className="relative">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${isOpen ? 'bg-success/10' : 'bg-destructive/10'}`}>
+                      <Building2 className={`w-8 h-8 ${isOpen ? 'text-success' : 'text-destructive'}`} />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">{entry.date}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {entry.openTime} - {entry.closeTime}
+                      <h2 className="text-2xl font-bold text-foreground">
+                        {isOpen ? "Office Open" : "Office Closed"}
+                      </h2>
+                      <p className="text-sm text-muted-foreground">
+                        {isOpen ? "Accepting visitors" : "Not accepting visitors"}
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-foreground">{entry.duration}</p>
-                    {entry.status === "override" && (
-                      <span className="text-[10px] text-warning font-medium">
-                        {entry.overrideBy}
-                      </span>
-                    )}
+                </div>
+
+                {/* Toggle Switch */}
+                <div className="flex items-center justify-between p-4 rounded-2xl bg-secondary/50 mb-4">
+                  <div className="flex items-center gap-3">
+                    <Power className={`w-5 h-5 ${isOpen ? 'text-success' : 'text-muted-foreground'}`} />
+                    <div>
+                      <p className="font-medium text-foreground">Office Status</p>
+                      <p className="text-xs text-muted-foreground">Toggle to open or close</p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={isOpen}
+                    onCheckedChange={handleToggleStatus}
+                    className="data-[state=checked]:bg-success"
+                  />
+                </div>
+
+                {isOverride && (
+                  <div className="flex items-center gap-2 p-3 rounded-xl bg-warning/10 mb-4">
+                    <AlertTriangle className="w-4 h-4 text-warning" />
+                    <span className="text-sm text-warning font-medium flex-1">Override mode active</span>
+                    <button
+                      onClick={handleClearOverride}
+                      className="text-xs text-warning underline font-medium"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-foreground">
+                      {isOpen ? "Opened at 9:00 AM" : "Closed at 6:00 PM"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">Regular hours: 9:00 AM - 6:00 PM</p>
                   </div>
                 </div>
-              ))}
+              </div>
+            </Card>
+
+            {/* Admin Override Controls */}
+            <Card className="p-4 rounded-2xl border-border mb-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Shield className="w-5 h-5 text-primary" />
+                <h2 className="font-semibold text-foreground">Admin Override</h2>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">Force office status regardless of schedule</p>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleForceOpen}
+                  className="flex-1 h-12 rounded-xl bg-success hover:bg-success/90 gap-2"
+                >
+                  <Zap className="w-4 h-4" />
+                  Force Open
+                </Button>
+                <Button
+                  onClick={handleForceClose}
+                  variant="outline"
+                  className="flex-1 h-12 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 gap-2"
+                >
+                  <Power className="w-4 h-4" />
+                  Force Close
+                </Button>
+              </div>
+            </Card>
+
+            {/* Activity Graph */}
+            <Card className="p-4 rounded-2xl border-border mb-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <History className="w-5 h-5 text-accent" />
+                  <h3 className="font-semibold text-foreground">Today's Activity</h3>
+                </div>
+              </div>
+              <div className="h-32">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={activityData}>
+                    <XAxis 
+                      dataKey="time" 
+                      axisLine={false} 
+                      tickLine={false}
+                      tick={{ fontSize: 9, fill: 'hsl(var(--muted-foreground))' }}
+                    />
+                    <YAxis hide />
+                    <Tooltip
+                      contentStyle={{
+                        background: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '12px',
+                        fontSize: '12px'
+                      }}
+                    />
+                    <defs>
+                      <linearGradient id="colorOfficeActivity" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <Area 
+                      type="monotone" 
+                      dataKey="activity" 
+                      stroke="hsl(var(--accent))" 
+                      fill="url(#colorOfficeActivity)"
+                      strokeWidth={2}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+
+            {/* Weekly Hours Chart */}
+            <Card className="p-4 rounded-2xl border-border mb-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-primary" />
+                  <h3 className="font-semibold text-foreground">Weekly Hours</h3>
+                </div>
+              </div>
+              <div className="h-32">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={weeklyData}>
+                    <XAxis 
+                      dataKey="day" 
+                      axisLine={false} 
+                      tickLine={false}
+                      tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                    />
+                    <YAxis hide />
+                    <Tooltip
+                      contentStyle={{
+                        background: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '12px',
+                        fontSize: '12px'
+                      }}
+                      formatter={(value: number) => [`${value}h`, 'Hours']}
+                    />
+                    <Bar 
+                      dataKey="hours" 
+                      fill="hsl(var(--primary))" 
+                      radius={[4, 4, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+
+            {/* History */}
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">History</h2>
+              <Select value={filterPeriod} onValueChange={setFilterPeriod}>
+                <SelectTrigger className="w-28 h-8 rounded-lg text-xs bg-secondary border-0">
+                  <Calendar className="w-3 h-3 mr-1" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="week">This Week</SelectItem>
+                  <SelectItem value="month">This Month</SelectItem>
+                  <SelectItem value="all">All Time</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </Card>
-        </div>
+
+            <Card className="rounded-2xl border-border overflow-hidden">
+              <div className="divide-y divide-border">
+                {mockHistory.map((entry, index) => (
+                  <div key={index} className="flex items-center justify-between p-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                        entry.status === "override" ? 'bg-warning/10' : 'bg-secondary'
+                      }`}>
+                        <Clock className={`w-5 h-5 ${
+                          entry.status === "override" ? 'text-warning' : 'text-muted-foreground'
+                        }`} />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">{entry.date}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {entry.openTime} - {entry.closeTime}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-foreground">{entry.duration}</p>
+                      {entry.status === "override" && (
+                        <span className="text-[10px] text-warning font-medium">
+                          {entry.overrideBy}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="attendance" className="mt-0">
+            <AdminAttendanceView />
+          </TabsContent>
+        </Tabs>
       </div>
     </MobileLayout>
   );
