@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Send, Paperclip, Smile, Info, X, Image, FileText, Pin } from "lucide-react";
+import { ArrowLeft, Send, Paperclip, Smile, Info, X, Image, FileText, Pin, AtSign } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { MessageBubble, type Message } from "@/components/chat/MessageBubble";
 import { ChannelInfoPanel } from "@/components/chat/ChannelInfoPanel";
 import { ForwardMessageDialog } from "@/components/chat/ForwardMessageDialog";
+import { MentionPopup } from "@/components/chat/MentionPopup";
 
 const mockMessages: Record<string, Message[]> = {
   "Sarah Chen": [
@@ -81,6 +82,8 @@ export default function ChatConversationPage() {
   const [isMuted, setIsMuted] = useState(false);
   const [channelDescription, setChannelDescription] = useState("Team discussions and updates");
   const [currentChannelName, setCurrentChannelName] = useState(chatName);
+  const [showMentions, setShowMentions] = useState(false);
+  const [mentionQuery, setMentionQuery] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -283,6 +286,37 @@ export default function ChatConversationPage() {
     setNewMessage("");
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNewMessage(value);
+
+    // Check for @ mention
+    const lastAtIndex = value.lastIndexOf("@");
+    if (lastAtIndex !== -1 && isChannel) {
+      const textAfterAt = value.slice(lastAtIndex + 1);
+      // Check if there's a space after the @, which would close the mention
+      if (!textAfterAt.includes(" ")) {
+        setShowMentions(true);
+        setMentionQuery(textAfterAt);
+      } else {
+        setShowMentions(false);
+        setMentionQuery("");
+      }
+    } else {
+      setShowMentions(false);
+      setMentionQuery("");
+    }
+  };
+
+  const handleSelectMention = (member: { id: number; name: string; initials: string }) => {
+    const lastAtIndex = newMessage.lastIndexOf("@");
+    const newText = newMessage.slice(0, lastAtIndex) + `@${member.name} `;
+    setNewMessage(newText);
+    setShowMentions(false);
+    setMentionQuery("");
+    inputRef.current?.focus();
+  };
+
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto flex flex-col">
       {/* Header */}
@@ -413,20 +447,34 @@ export default function ChatConversationPage() {
 
       {/* Message Input */}
       <div className="sticky bottom-0 bg-card/95 backdrop-blur-lg border-t border-border p-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative">
           <Button variant="ghost" size="icon" className="rounded-xl shrink-0">
             <Paperclip className="w-5 h-5 text-muted-foreground" />
           </Button>
           <div className="flex-1 relative">
+            {/* Mention Popup */}
+            <MentionPopup
+              members={channelMembers.filter(m => m.name !== "You").map(m => ({ ...m, status: m.status }))}
+              searchQuery={mentionQuery}
+              onSelect={handleSelectMention}
+              visible={showMentions}
+            />
             <Input
               ref={inputRef}
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
-              placeholder={editingMessage ? "Edit message..." : "Type a message..."}
+              onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && !showMentions) {
+                  handleSend();
+                }
+                if (e.key === "Escape") {
+                  setShowMentions(false);
+                }
+              }}
+              placeholder={editingMessage ? "Edit message..." : "Type @ to mention..."}
               className="h-11 pl-4 pr-12 rounded-2xl bg-secondary border-0"
             />
-            <Button 
+            <Button
               variant="ghost" 
               size="icon" 
               className="absolute right-1 top-1/2 -translate-y-1/2 rounded-xl"
