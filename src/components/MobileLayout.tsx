@@ -1,20 +1,18 @@
 import { BottomNav } from "./BottomNav";
+import { ReactNode } from "react";
 
 interface MobileLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
   showNav?: boolean;
-  title?: string;
+  className?: string;
 }
 
-export function MobileLayout({ children, showNav = true, title }: MobileLayoutProps) {
+export function MobileLayout({ children, showNav = true, className = "" }: MobileLayoutProps) {
   return (
-    <div className="min-h-screen bg-background max-w-md mx-auto relative">
-      {title && (
-        <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border px-4 py-4">
-          <h1 className="text-xl font-semibold text-foreground">{title}</h1>
-        </header>
-      )}
-      <main className={showNav ? "pb-24" : ""}>{children}</main>
+    <div className={`min-h-screen bg-background max-w-md mx-auto relative overflow-x-hidden ${className}`}>
+      <main className={`${showNav ? "pb-28" : ""} animate-fade-in`}>
+        {children}
+      </main>
       {showNav && <BottomNav />}
     </div>
   );
