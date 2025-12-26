@@ -1,16 +1,11 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { MobileLayout } from "@/components/MobileLayout";
-import { Search, Hash, Users, Plus, MessageCircle, BellOff, Lock, ChevronDown } from "lucide-react";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Search, Hash, Plus, MessageCircle, BellOff, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface Channel {
   id: number;
@@ -115,21 +110,19 @@ export default function ChatsPage() {
 
   return (
     <MobileLayout>
-      <div className="px-4 pt-6 pb-4">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Messages</h1>
-            {totalUnread > 0 && (
-              <p className="text-sm text-muted-foreground mt-0.5">
-                {totalUnread} unread message{totalUnread > 1 ? 's' : ''}
-              </p>
-            )}
-          </div>
-          <Button size="icon" className="rounded-2xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25">
+      {/* Header with Notifications */}
+      <PageHeader 
+        title="Messages" 
+        subtitle={totalUnread > 0 ? `${totalUnread} unread message${totalUnread > 1 ? 's' : ''}` : undefined}
+        actions={
+          <Button size="icon" className="w-10 h-10 rounded-xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
             <Plus className="w-5 h-5" />
           </Button>
-        </div>
-        
+        }
+      />
+
+      <div className="px-4 pt-4 pb-4">
+        {/* Search */}
         <div className="relative mb-4">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <Input
@@ -137,12 +130,12 @@ export default function ChatsPage() {
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-12 pl-12 rounded-2xl bg-secondary/50 border-0 focus:bg-secondary transition-colors"
+            className="h-12 pl-12 rounded-2xl bg-secondary/50 border-0 focus:bg-secondary focus:ring-2 focus:ring-primary/20 transition-all"
           />
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
           {[
             { key: "all", label: "All" },
             { key: "unread", label: "Unread" },
@@ -152,10 +145,10 @@ export default function ChatsPage() {
             <button
               key={f.key}
               onClick={() => setFilter(f.key as FilterType)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+              className={`px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                 filter === f.key
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
               }`}
             >
               {f.label}
@@ -175,17 +168,20 @@ export default function ChatsPage() {
                   Channels
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">{filteredChannels.length}</span>
+              <span className="text-xs text-muted-foreground bg-secondary/50 px-2 py-0.5 rounded-full">
+                {filteredChannels.length}
+              </span>
             </div>
             
-            <div className="space-y-1">
-              {filteredChannels.map((channel) => (
+            <div className="space-y-1.5">
+              {filteredChannels.map((channel, index) => (
                 <button
                   key={channel.id}
                   onClick={() => handleChannelClick(channel.name)}
-                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl hover:bg-secondary/70 active:scale-[0.98] transition-all duration-200"
+                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-card/50 hover:bg-secondary/70 active:scale-[0.98] transition-all duration-200 border border-transparent hover:border-border/50"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <div className="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center relative">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center relative shrink-0">
                     <Hash className="w-5 h-5 text-primary" />
                     {channel.isPrivate && (
                       <Lock className="w-3 h-3 text-muted-foreground absolute -bottom-0.5 -right-0.5 bg-background rounded-full p-0.5" />
@@ -193,7 +189,7 @@ export default function ChatsPage() {
                   </div>
                   <div className="flex-1 text-left min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className={`font-medium truncate ${channel.unread > 0 ? 'text-foreground' : 'text-foreground/80'}`}>
+                      <span className={`font-semibold truncate ${channel.unread > 0 ? 'text-foreground' : 'text-foreground/80'}`}>
                         {channel.name}
                       </span>
                       {channel.isMuted && (
@@ -201,24 +197,27 @@ export default function ChatsPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <p className={`text-sm truncate ${channel.unread > 0 ? 'text-foreground/80' : 'text-muted-foreground'}`}>
+                      <p className={`text-sm truncate ${channel.unread > 0 ? 'text-foreground/80 font-medium' : 'text-muted-foreground'}`}>
                         {channel.lastMessage}
                       </p>
-                      <span className="text-xs text-muted-foreground shrink-0">
-                        · {channel.lastMessageTime}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[10px] text-muted-foreground/70">
+                        {channel.members} members
+                      </span>
+                      <span className="text-[10px] text-muted-foreground/70">•</span>
+                      <span className="text-[10px] text-muted-foreground/70">
+                        {channel.lastMessageTime}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {channel.members} members
-                    </p>
                   </div>
                   {channel.unread > 0 && !channel.isMuted && (
-                    <span className="px-2.5 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-full min-w-[24px] text-center">
+                    <span className="px-2.5 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full min-w-[24px] text-center shadow-lg shadow-primary/20">
                       {channel.unread}
                     </span>
                   )}
                   {channel.unread > 0 && channel.isMuted && (
-                    <span className="w-2.5 h-2.5 bg-muted-foreground rounded-full" />
+                    <span className="w-2.5 h-2.5 bg-muted-foreground/50 rounded-full" />
                   )}
                 </button>
               ))}
@@ -228,7 +227,7 @@ export default function ChatsPage() {
         
         {/* Direct Messages Section */}
         {(filter === "all" || filter === "dms" || filter === "unread") && filteredDMs.length > 0 && (
-          <div>
+          <div className="mb-6">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 text-primary" />
@@ -236,19 +235,22 @@ export default function ChatsPage() {
                   Direct Messages
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">{filteredDMs.length}</span>
+              <span className="text-xs text-muted-foreground bg-secondary/50 px-2 py-0.5 rounded-full">
+                {filteredDMs.length}
+              </span>
             </div>
             
-            <div className="space-y-1">
-              {filteredDMs.map((dm) => (
+            <div className="space-y-1.5">
+              {filteredDMs.map((dm, index) => (
                 <button
                   key={dm.id}
                   onClick={() => handleDMClick(dm.name)}
-                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl hover:bg-secondary/70 active:scale-[0.98] transition-all duration-200"
+                  className="w-full flex items-center gap-3 p-3.5 rounded-2xl bg-card/50 hover:bg-secondary/70 active:scale-[0.98] transition-all duration-200 border border-transparent hover:border-border/50"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <div className="relative">
+                  <div className="relative shrink-0">
                     <Avatar className="w-12 h-12 ring-2 ring-background">
-                      <AvatarFallback className="bg-secondary text-secondary-foreground font-medium">
+                      <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-foreground font-semibold">
                         {dm.initials}
                       </AvatarFallback>
                     </Avatar>
@@ -258,19 +260,19 @@ export default function ChatsPage() {
                   </div>
                   <div className="flex-1 text-left min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className={`font-medium truncate ${dm.unread > 0 ? 'text-foreground' : 'text-foreground/80'}`}>
+                      <span className={`font-semibold truncate ${dm.unread > 0 ? 'text-foreground' : 'text-foreground/80'}`}>
                         {dm.name}
                       </span>
-                      <span className={`text-xs shrink-0 ${dm.unread > 0 ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                      <span className={`text-xs shrink-0 ${dm.unread > 0 ? 'text-primary font-bold' : 'text-muted-foreground'}`}>
                         {dm.time}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-2 mt-0.5">
-                      <p className={`text-sm truncate ${dm.unread > 0 ? 'text-foreground/80' : 'text-muted-foreground'}`}>
+                      <p className={`text-sm truncate ${dm.unread > 0 ? 'text-foreground/80 font-medium' : 'text-muted-foreground'}`}>
                         {dm.lastMessage}
                       </p>
                       {dm.unread > 0 && (
-                        <span className="w-5 h-5 bg-primary text-primary-foreground text-xs font-semibold rounded-full flex items-center justify-center shrink-0">
+                        <span className="w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
                           {dm.unread}
                         </span>
                       )}
@@ -284,11 +286,11 @@ export default function ChatsPage() {
 
         {/* Empty States */}
         {filteredChannels.length === 0 && filteredDMs.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-              <MessageCircle className="w-8 h-8 text-muted-foreground" />
+          <div className="text-center py-16">
+            <div className="w-20 h-20 bg-secondary/50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <MessageCircle className="w-10 h-10 text-muted-foreground/50" />
             </div>
-            <h3 className="font-medium text-foreground mb-1">No conversations found</h3>
+            <h3 className="font-semibold text-foreground mb-1">No conversations found</h3>
             <p className="text-sm text-muted-foreground">
               {filter === "unread" ? "You're all caught up!" : "Try a different search term"}
             </p>
