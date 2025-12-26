@@ -19,6 +19,7 @@ import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminChannelsPage from "./pages/admin/AdminChannelsPage";
 import AdminReportsPage from "./pages/admin/AdminReportsPage";
 import AdminOfficePage from "./pages/admin/AdminOfficePage";
+import AdminBucketPage from "./pages/admin/AdminBucketPage";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => {
             <Route path="/admin/channels" element={<AdminChannelsPage />} />
             <Route path="/admin/reports" element={<AdminReportsPage />} />
             <Route path="/admin/office" element={<AdminOfficePage />} />
+            <Route path="/admin/bucket" element={<AdminBucketPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

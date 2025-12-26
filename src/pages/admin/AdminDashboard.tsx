@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Users, Clock, MessageSquare, FileText, TrendingUp, 
-  Building2, ChevronRight, BarChart3, Activity
+  Building2, ChevronRight, BarChart3, Activity, ShoppingCart
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, BarChart, Bar, Tooltip } from "recharts";
@@ -44,6 +44,7 @@ const quickActions = [
   { label: "Manage Channels", description: "12 active channels", path: "/admin/channels", icon: MessageSquare },
   { label: "View Reports", description: "47 submitted today", path: "/admin/reports", icon: FileText },
   { label: "Office Controls", description: "Currently Open", path: "/admin/office", icon: Building2, status: "open" },
+  { label: "Purchase Bucket", description: "5 items pending", path: "/admin/bucket", icon: ShoppingCart, badge: "5" },
 ];
 
 export default function AdminDashboard() {
