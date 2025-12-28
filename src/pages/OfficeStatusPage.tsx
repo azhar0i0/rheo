@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { MobileLayout } from "@/components/MobileLayout";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building2, Clock, Calendar, UserCheck, MapPin } from "lucide-react";
 import { AttendanceCard } from "@/components/attendance/AttendanceCard";
@@ -22,137 +21,131 @@ export default function OfficeStatusPage() {
 
   return (
     <MobileLayout>
-      {/* Header with Notifications */}
       <PageHeader title="Office" />
 
-      <div className="px-4 pt-4 pb-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full h-12 mb-6 p-1 rounded-2xl bg-secondary/80 border border-border/50">
-            <TabsTrigger 
-              value="attendance" 
-              className="flex-1 h-full rounded-xl gap-2 font-semibold transition-all data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:shadow-primary/5"
-            >
-              <UserCheck className="w-4 h-4" />
-              Attendance
-            </TabsTrigger>
-            <TabsTrigger 
-              value="office" 
-              className="flex-1 h-full rounded-xl gap-2 font-semibold transition-all data-[state=active]:bg-card data-[state=active]:shadow-lg data-[state=active]:shadow-primary/5"
-            >
-              <Building2 className="w-4 h-4" />
-              Office Status
-            </TabsTrigger>
-          </TabsList>
+      <div className="px-4 pt-4">
+        {/* Segmented Control */}
+        <div className="flex bg-secondary rounded-lg p-1 mb-6">
+          <button
+            onClick={() => setActiveTab("attendance")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-medium transition-colors ${
+              activeTab === "attendance" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
+            }`}
+          >
+            <UserCheck className="w-4 h-4" />
+            Attendance
+          </button>
+          <button
+            onClick={() => setActiveTab("office")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-medium transition-colors ${
+              activeTab === "office" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
+            }`}
+          >
+            <Building2 className="w-4 h-4" />
+            Office
+          </button>
+        </div>
 
-          <TabsContent value="attendance" className="mt-0 space-y-6">
-            {/* Daily Attendance Card */}
+        {activeTab === "attendance" && (
+          <div className="space-y-6 animate-fade-in">
             <AttendanceCard />
 
-            {/* Calendar View */}
+            {/* Calendar Section */}
             <section>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-primary" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground">Attendance Calendar</h3>
-              </div>
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                Calendar
+              </h3>
               <AttendanceCalendar />
             </section>
 
-            {/* Attendance History */}
+            {/* History Section */}
             <section>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                  <Clock className="w-4 h-4 text-accent" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground">Recent History</h3>
-              </div>
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                Recent
+              </h3>
               <AttendanceHistory />
             </section>
-          </TabsContent>
+          </div>
+        )}
 
-          <TabsContent value="office" className="mt-0 space-y-6">
-            {/* Main Status Card */}
-            <Card className="p-6 rounded-3xl border-border/50 shadow-xl bg-gradient-to-br from-card to-card/80">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${
-                    isOpen 
-                      ? "bg-gradient-to-br from-success/20 to-success/10" 
-                      : "bg-muted"
+        {activeTab === "office" && (
+          <div className="space-y-6 animate-fade-in">
+            {/* Status Card */}
+            <div className="bg-card rounded-xl p-5 border border-border">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                    isOpen ? "bg-success/10" : "bg-muted"
                   }`}>
-                    <Building2 className={`w-8 h-8 ${isOpen ? "text-success" : "text-muted-foreground"}`} />
+                    <Building2 className={`w-6 h-6 ${isOpen ? "text-success" : "text-muted-foreground"}`} />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground">
-                      Office is {isOpen ? "Open" : "Closed"}
+                    <h2 className="text-lg font-semibold text-foreground">
+                      {isOpen ? "Open" : "Closed"}
                     </h2>
-                    <div className="flex items-center gap-1.5 text-muted-foreground mt-1">
-                      <MapPin className="w-3.5 h-3.5" />
-                      <p className="text-sm">Main Headquarters</p>
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <MapPin className="w-3 h-3" />
+                      <span className="text-sm">Main HQ</span>
                     </div>
                   </div>
                 </div>
                 <div className="relative">
-                  <span className={`w-4 h-4 rounded-full ${isOpen ? "bg-success" : "bg-muted-foreground"}`} />
+                  <span className={`w-3 h-3 rounded-full ${isOpen ? "bg-success" : "bg-muted-foreground"}`} />
                   {isOpen && (
-                    <span className="absolute inset-0 w-4 h-4 rounded-full bg-success animate-ping opacity-50" />
+                    <span className="absolute inset-0 w-3 h-3 rounded-full bg-success animate-ping opacity-40" />
                   )}
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-secondary/50 rounded-2xl p-4 border border-border/30">
-                  <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                    <Clock className="w-4 h-4" />
-                    <span className="text-xs font-medium uppercase tracking-wide">Opens at</span>
+                <div className="bg-secondary/50 rounded-lg p-3">
+                  <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
+                    <Clock className="w-3 h-3" />
+                    <span className="text-xs font-medium">Opens</span>
                   </div>
-                  <span className="text-xl font-bold text-foreground">8:00 AM</span>
+                  <span className="text-base font-semibold text-foreground">8:00 AM</span>
                 </div>
-                <div className="bg-secondary/50 rounded-2xl p-4 border border-border/30">
-                  <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                    <Clock className="w-4 h-4" />
-                    <span className="text-xs font-medium uppercase tracking-wide">Closes at</span>
+                <div className="bg-secondary/50 rounded-lg p-3">
+                  <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
+                    <Clock className="w-3 h-3" />
+                    <span className="text-xs font-medium">Closes</span>
                   </div>
-                  <span className="text-xl font-bold text-foreground">6:00 PM</span>
+                  <span className="text-base font-semibold text-foreground">6:00 PM</span>
                 </div>
               </div>
-            </Card>
+            </div>
             
-            {/* Office History */}
+            {/* History Section */}
             <section>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-primary" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground">Office History</h3>
-              </div>
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                History
+              </h3>
               
-              <div className="space-y-2.5">
+              <div className="bg-card rounded-xl border border-border overflow-hidden">
                 {officeHistory.map((day, index) => (
-                  <Card
+                  <div
                     key={index}
-                    className="p-4 rounded-2xl border-border/50 flex items-center justify-between hover:bg-secondary/30 transition-colors"
+                    className="flex items-center justify-between px-4 py-3 border-b border-border/50 last:border-b-0"
                   >
                     <div>
-                      <p className="font-semibold text-foreground">{day.date}</p>
-                      <p className="text-sm text-muted-foreground mt-0.5">
+                      <p className="font-medium text-foreground">{day.date}</p>
+                      <p className="text-sm text-muted-foreground">
                         {day.open} – {day.close}
                       </p>
                     </div>
-                    <div className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                       day.status === "open"
                         ? "bg-success/10 text-success"
                         : "bg-muted text-muted-foreground"
                     }`}>
                       {day.status === "open" ? "Active" : "Ended"}
-                    </div>
-                  </Card>
+                    </span>
+                  </div>
                 ))}
               </div>
             </section>
-          </TabsContent>
-        </Tabs>
+          </div>
+        )}
       </div>
     </MobileLayout>
   );
