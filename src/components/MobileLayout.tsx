@@ -9,8 +9,8 @@ interface MobileLayoutProps {
 
 export function MobileLayout({ children, showNav = true, className = "" }: MobileLayoutProps) {
   return (
-    <div className={`min-h-screen bg-background max-w-md mx-auto relative overflow-x-hidden ${className}`}>
-      <main className={`${showNav ? "pb-28" : ""} animate-fade-in`}>
+    <div className={`min-h-screen bg-background max-w-md mx-auto relative ${className}`}>
+      <main className={`${showNav ? "pb-20" : ""} safe-bottom`}>
         {children}
       </main>
       {showNav && <BottomNav />}

@@ -10,6 +10,7 @@ interface PageHeaderProps {
   showNotifications?: boolean;
   actions?: ReactNode;
   className?: string;
+  large?: boolean;
 }
 
 export function PageHeader({
@@ -19,31 +20,34 @@ export function PageHeader({
   showNotifications = true,
   actions,
   className = "",
+  large = false,
 }: PageHeaderProps) {
   const navigate = useNavigate();
 
   return (
-    <header className={`sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/50 ${className}`}>
-      <div className="px-4 py-4">
+    <header className={`sticky top-0 z-40 bg-background safe-top ${className}`}>
+      <div className="px-4 py-3 border-b border-border/60">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
             {showBack && (
               <button
                 onClick={() => navigate(-1)}
-                className="w-10 h-10 rounded-xl bg-secondary/80 hover:bg-secondary flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95"
+                className="w-10 h-10 -ml-2 flex items-center justify-center rounded-full press-scale touch-target"
               >
-                <ArrowLeft className="w-5 h-5 text-foreground" />
+                <ArrowLeft className="w-6 h-6 text-foreground" />
               </button>
             )}
-            <div>
-              <h1 className="text-xl font-bold text-foreground">{title}</h1>
+            <div className="min-w-0">
+              <h1 className={`font-semibold text-foreground truncate ${large ? 'text-2xl' : 'text-lg'}`}>
+                {title}
+              </h1>
               {subtitle && (
-                <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
+                <p className="text-xs text-muted-foreground truncate mt-0.5">{subtitle}</p>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 shrink-0">
             {actions}
             {showNotifications && <NotificationBell />}
           </div>
