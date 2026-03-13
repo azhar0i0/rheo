@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
+//assets
 import earthFooter from '@/assets/earth-footer.avif';
 
 const Footer = () => {
@@ -15,7 +16,7 @@ const Footer = () => {
     hour12: false,
   });
 
-  const containerVariants = {
+  const containerVariants : Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -25,7 +26,7 @@ const Footer = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants : Variants ={
     hidden: { opacity: 0, y: 20 },
     show: {
       opacity: 1,
@@ -109,7 +110,7 @@ const Footer = () => {
           className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-border/30"
         >
           <p className="text-sm text-muted-foreground shadow-lg">
-            © 2025 Rheo Technologies. All rights reserved.
+            © 2026 Rheo Technologies. All rights reserved.
           </p>
 
           <p className="text-sm text-muted-foreground shadow-lg">

@@ -142,72 +142,98 @@ const WorkflowSection = () => {
                 ))}
 
             </motion.div>
-            
-            {/* Mobile Workflow Layout */}
-            <motion.div
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="block md:hidden">
-                <div className="max-w-[92%] mx-auto block md:hidden">
 
-                    {/* Mobile Header */}
-                    <div className="mb-16">
-                        <span className="text-[#1fb6ff] text-[13px] tracking-wide">
-                            ⬤ ‎ ‎ Workflow
+            {/* Mobile Layout */}
+            <div className="block w-full px-5 py-12 md:hidden relative">
+                {/* Mobile Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="mb-16"
+                >
+                    <div className="mb-2 flex items-center gap-2">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] text-[#1fb6ff]">
+                            ⬤
                         </span>
-
-                        <h2 className="text-white text-3xl font-semibold mt-4 leading-tight">
-                            Rheo Technologies SmartBuild Process
-                        </h2>
+                        <span className="text-xs font-bold tracking-widest text-[#1fb6ff] uppercase">
+                            Workflow
+                        </span>
                     </div>
+                    <h2 className="text-3xl font-medium leading-[1.2] tracking-tight text-white">
+                        Rheo SmartBuild <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1fb6ff] to-[#8b2fc9]">
+                            Process.
+                        </span>
+                    </h2>
+                </motion.div>
 
-                    {/* Mobile Cards */}
-                    <div className="space-y-12">
-                        {WORKFLOW_DATA.map((item) => (
+                {/* Timeline Container */}
+                <div className="relative">
+                    <div className="absolute bottom-0 left-[15px] top-2 w-[2px] bg-gradient-to-b from-[#1fb6ff]/50 via-[#8b2fc9]/30 to-transparent" />
+
+                    <div className="flex flex-col gap-10">
+                        {WORKFLOW_DATA.map((item, index) => (
                             <motion.div
                                 key={item.step}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.4 }}
-                                viewport={{ once: true }}
-                                className="border border-[#1fb6ff]/30 rounded-2xl p-6"
+                                initial={{ opacity: 0, x: -20, y: 20 }}
+                                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 100,
+                                    damping: 20,
+                                    delay: 0.1
+                                }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                className="relative pl-12"
                             >
-                                {/* Step + Tag */}
-                                <div className="flex items-center justify-between mb-6">
-                                    <span className="text-[#1fb6ff] text-xl font-medium">
+                                {/* Timeline Node */}
+                                <div className="absolute left-[8px] top-6 flex h-[16px] w-[16px] items-center justify-center rounded-full">
+                                    <div className="h-[6px] w-[6px] rounded-full bg-[#1fb6ff]" />
+                                </div>
+
+                                {/* The Card */}
+                                <div className="group relative overflow-hidden border border-white/10 rounded-sm p-6">
+
+                                    <span className="pointer-events-none absolute -bottom-6 right-4 text-[120px] font-black leading-none text-gray-300">
                                         {item.step}
                                     </span>
 
-                                    <span className="px-4 py-1 rounded-full border border-[#1fb6ff]/40 text-[#1fb6ff] text-[12px]">
-                                        {item.tag}
-                                    </span>
+                                    {/* Glassmorphic Tag */}
+                                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-md">
+                                        <span className="h-1.5 w-1.5 rounded-full bg-[#1fb6ff]" />
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-white">
+                                            {item.tag}
+                                        </span>
+                                    </div>
+
+                                    {/* Title */}
+                                    <h3 className="relative z-10 mb-6 text-xl font-semibold leading-snug text-white">
+                                        {item.title}
+                                    </h3>
+
+                                    {/* Points List */}
+                                    <ul className="relative z-10 flex flex-col gap-3">
+                                        {item.points.map((point, idx) => (
+                                            <li key={idx} className="flex items-start gap-3 text-sm leading-relaxed text-gray-400">
+                                                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#8b2fc9]" />
+                                                <p>
+                                                    <span className="font-medium text-gray-200">
+                                                        {point.label}
+                                                    </span>{" "}
+                                                    {point.text}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-
-                                {/* Title */}
-                                <h3 className="text-white text-lg font-semibold mb-4 leading-snug">
-                                    {item.title}
-                                </h3>
-
-                                {/* Points */}
-                                <ul className="space-y-3 text-white/70 text-[14px] leading-relaxed">
-                                    {item.points.map((point, idx) => (
-                                        <li key={idx}>
-                                            <span className="text-white font-medium">
-                                                {point.label}
-                                            </span>{" "}
-                                            {point.text}
-                                        </li>
-                                    ))}
-                                </ul>
                             </motion.div>
                         ))}
                     </div>
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
-};  
+};
 
 export default WorkflowSection;

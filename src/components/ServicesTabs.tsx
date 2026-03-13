@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaCode } from "react-icons/fa6";
 
 const tabs = [
     { id: 'plan', label: 'Plan' },
@@ -113,8 +114,6 @@ const tabContent = {
 
 function ServicesTabs() {
     const [activeTab, setActiveTab] = useState('plan');
-
-    // FIX: Derived state to get the content for the currently active tab
     const currentContent = tabContent[activeTab as keyof typeof tabContent];
 
     return (
@@ -240,7 +239,7 @@ function ServicesTabs() {
                                     Deploy, optimize, and grow with confidence.
                                 </p>
                                 <p className=" flex items-center gap-2 text-foreground">
-                                    <span className="text-primary text-xs">&lt;/&gt;</span> Scale
+                                    <FaCode className='text-primary' />  Scale
                                 </p>
                             </motion.div>
                         </div>

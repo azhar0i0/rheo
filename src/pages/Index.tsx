@@ -1,14 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import {
-  ArrowRight,
-  LayoutGrid,
-  Smartphone,
-  Server,
-  Code2,
-  Pencil,
-  Plug,
-} from 'lucide-react';
 import { useState } from 'react';
 // Import images
 import heroAbstract from '@/assets/hero-abstract.avif';
@@ -30,62 +21,32 @@ import AboutServicesSection from '@/components/LandingPageUI/AboutServicesSectio
 import WorkflowSection from '@/components/LandingPageUI/WorkflowSection';
 import Footer from '@/components/Footer';
 import TextScroll from '@/components/LandingPageUI/TextScroll';
+import ServicesSection from './Services';
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      duration: 0.6,
-      ease: 'easeOut',
-      staggerChildren: 0.08,
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
     },
   },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
-      ease: 'easeOut',
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
     },
   },
 };
 
 const Index = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const services = [
-    { title: 'Branding', items: ['Logo Design', 'Brand Identity', 'Style Guides'] },
-    { title: 'App Development', items: ['iOS Apps', 'Android Apps', 'Cross-Platform'] },
-    { title: 'Web3 dApps', items: ['Smart Contracts', 'DeFi', 'NFT Platforms'] },
-    { title: 'SaaS', items: ['Cloud Solutions', 'API Integration', 'Scalable Systems'] },
-  ];
-
-  const features = [
-    { title: 'Parallel Workflows', desc: 'Run 10+ projects simultaneously' },
-    { title: 'Full Scalability', desc: 'Scale from MVP to enterprise level' },
-    { title: 'No-code options', desc: 'Quick prototypes for non-tech teams' },
-    { title: 'Dev-ops Friendly', desc: 'CI/CD pipelines included' },
-    { title: 'Privacy-First', desc: 'All code is yours, always' },
-    { title: 'Cloud & Infrastructure', desc: 'Automated cloud setup' },
-    { title: 'TechBolt Engine', desc: 'Our proprietary tech stack' },
-    { title: 'Real-time Support', desc: 'Talk to devs, not chatbots' },
-    { title: 'Team On-boarding', desc: 'Full documentation provided' },
-    { title: 'Quality Assurance', desc: 'Rigorous testing protocols' },
-  ];
-
-  const portfolioItems = [
-    { image: webDevTeam, title: 'Web Dashboard' },
-    { image: mobileDev, title: 'Mobile App' },
-    { image: uiUxDesign, title: 'UI Design' },
-    { image: cloudSolutions, title: 'Cloud Platform' },
-    { image: devops, title: 'DevOps Pipeline' },
-    { image: flowFunction, title: 'Full Stack' },
-  ];
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -97,274 +58,75 @@ const Index = () => {
       <Header />
 
       {/* ========== HERO SECTION ========== */}
-      {/* Laptop & Desktop View */}
-      <div className="hidden md:block">
-        <motion.section
-          initial={{ opacity: 0, y: 70 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="relative min-h-screen overflow-hidden bg-black pt-[72px]">
-          {/* Background */}
-          <div className="absolute inset-0">
-            <img
-              src={heroAbstract}
-              alt=""
-              className="absolute left-0 top-0 h-full w-full object-cover"
-            />
-            {/* <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/60 to-black" /> */}
-          </div>
+      <section className="relative flex min-h-[100svh] w-full items-center overflow-hidden pt-20 md:pt-0">
 
-          {/* Content */}
-          <div className="relative min-h-screen flex items-center justify-center">
-            <div className="relative z-10 mx-auto max-w-[90%] px-6 text-center">
-              {/* Headline */}
-              <h1 className="mx-auto max-w-[900px] font-display text-[40px] md:text-[56px] font-bold leading-[1.1] tracking-tight text-white">
-                From architecture to deployment
-                <br />
-                <span className="inline-flex items-center gap-2">
-                  <span className="text-white">—</span>
-                  <span className="text-[#1fb6ff]">flawlessly executed.</span>
-                </span>
-              </h1>
+        {/* Background layer */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <img
+            src={heroAbstract}
+            alt=""
+            role="presentation"
+            className="h-full w-full object-cover object-center opacity-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/40" />
+        </div>
 
-              {/* Description */}
-              <p className="mx-auto mt-6 max-w-[520px] text-[15px] leading-[1.7] text-white/60">
-                Full-service software development studio delivering web, mobile,
-                cloud, and custom solutions — from concept to scale.
-              </p>
+        {/* Unified Content layer */}
+        <div className="relative z-10 w-full mx-auto max-w-7xl px-6 md:px-12">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="mx-auto max-w-[92%] text-left md:max-w-4xl md:text-center"
+          >
+            {/* Eyebrow */}
+            <motion.span
+              variants={itemVariants}
+              className="mb-4 inline-block text-xs font-semibold tracking-widest text-[#1fb6ff] uppercase md:text-sm"
+            >
+              Software Development Studio
+            </motion.span>
 
-              {/* CTA */}
-              <div className="mt-10 flex justify-center">
-                <PressableButton />
-              </div>
-            </div>
-          </div>
-        </motion.section>
-      </div>
-      {/* Mobile Hero */}
-      <div className="block md:hidden">
-        <motion.section
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="relative min-h-[100svh] overflow-hidden bg-black pt-20 w-full"
-        >
-          {/* Background */}
-          <div className="absolute inset-0">
-            <img
-              src={heroAbstract}
-              alt=""
-              className="h-full w-full object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-black/60" />
-          </div>
-
-          {/* Content */}
-          <div className="relative z-10 flex min-h-[100svh] items-center">
-            <div className="mx-auto max-w-[92%] text-left">
-
-              {/* Eyebrow */}
-              <span className="mb-4 inline-block text-[12px] tracking-widest text-[#1fb6ff] uppercase">
-                Software Development Studio
+            {/* Headline */}
+            <motion.h1
+              variants={itemVariants}
+              className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl lg:text-7xl"
+            >
+              From architecture{" "}
+              <br className="hidden md:block" />
+              <span className="md:hidden">to deployment — </span>
+              <span className="hidden md:inline">to deployment </span>
+              <span className="inline-flex items-center gap-2 md:mt-2">
+                <span className="hidden text-white/50 md:inline">—</span>
+                <span className="text-[#1fb6ff]">flawlessly executed.</span>
               </span>
+            </motion.h1>
 
-              {/* Headline */}
-              <h1 className="font-display text-[32px] font-bold leading-tight text-white">
-                From architecture
-                <br />
-                to deployment —
-                <br />
-                <span className="text-[#1fb6ff]">
-                  flawlessly executed.
-                </span>
-              </h1>
+            {/* Description */}
+            <motion.p
+              variants={itemVariants}
+              className="mt-6 max-w-[320px] text-base leading-relaxed text-white/70 md:mx-auto md:max-w-xl md:text-lg"
+            >
+              Full-service software development delivering web, mobile, cloud,
+              and custom solutions — from concept to scale.
+            </motion.p>
 
-              {/* Description */}
-              <p className="mt-5 max-w-[320px] text-[14px] leading-relaxed text-white/70">
-                Full-service software development delivering web, mobile, cloud,
-                and custom solutions — from concept to scale.
-              </p>
-
-              {/* CTA */}
-              <div className="mt-8">
-                <PressableButton />
-              </div>
-
-            </div>
-          </div>
-        </motion.section>
-      </div>
+            {/* CTA */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-10 flex justify-start md:justify-center"
+            >
+              <PressableButton />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* ========== HERO LOOP ========== */}
       <HeroLoop />
 
       {/* ========== SERVICES SECTION ========== */}
-      <section className="py-24 bg-black">
-        <div className="md:max-w-[90%] sm:max-w-[100%] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 70 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-16 items-start">
-
-            {/* LEFT CONTENT */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              {/* Label */}
-              <div className="mb-2">
-                <span className="text-[#8b2fc9] text-[14px] tracking-wide">
-                  ⬤ ‎ Services
-                </span>
-              </div>
-
-              {/* Heading */}
-              <h2 className="text-white text-[22px] leading-[1.2] mb-5">
-                Our development services cover every stage of building modern software.
-              </h2>
-
-              {/* Description */}
-              <p className="text-[#9ca3af] text-[12px] mb-3 max-w-[360px]">
-                From idea to launch, we develop software that scales, performs, and connects.
-              </p>
-
-              {/* Button */}
-              <motion.div>
-                <Link
-                  to="/all-services"
-                  className="group flex items-center justify-between w-full bg-[#0096C7] hover:bg-[#0289b6] transition-colors text-white font-medium text-[14px] px-4 py-3 rounded-lg"
-                >
-                  {/* Text flush left */}
-                  <span className="flex-1 text-center">All Services</span>
-
-                  {/* Arrow flush right + rotate on hover */}
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:rotate-180"
-                  />
-                </Link>
-              </motion.div>
-
-            </motion.div>
-
-            {/* RIGHT GRID */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {/* Card 1 */}
-              <Link
-                to="/web-services"
-                className="block">
-                <div className="flex flex-col justify-between bg-gradient-to-b from-[#0b0b0b] to-[#050505] border border-[#1f1f1f] rounded-xl p-6 min-h-[200px] hover:border-[#22d3ee]/30 transition-colors">
-                  <div className="text-[#06b6d4] mb-6">
-                    <LayoutGrid size={22} />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-[17px] font-semibold mb-1">
-                      Web Development
-                    </h3>
-                    <p className="text-[#9ca3af] text-[14px] leading-[1.6]">
-                      Modern, fast, and scalable websites and web applications.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Card 2 */}
-              <Link
-                to="/app-services"
-                className="block">
-                <div className="flex flex-col justify-between bg-gradient-to-b from-[#0b0b0b] to-[#050505] border border-[#1f1f1f] rounded-2xl p-6 min-h-[200px] hover:border-[#22d3ee]/30 transition-colors">
-                  <div className="text-[#06b6d4] mb-6">
-                    <Smartphone size={22} />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-[17px] font-semibold mb-1">
-                      Mobile App Development
-                    </h3>
-                    <p className="text-[#9ca3af] text-[14px] leading-[1.6]">
-                      Mobile solutions crafted to inspire, engage, User friendly interface.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Card 3 */}
-              <Link to="/backend-services" className="block">
-                <div className="flex flex-col justify-between bg-gradient-to-b from-[#0b0b0b] to-[#050505] border border-[#1f1f1f] rounded-2xl p-6 min-h-[200px] hover:border-[#22d3ee]/30 transition-colors">
-                  <div className="text-[#06b6d4] mb-6">
-                    <Server size={22} />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-[17px] font-semibold mb-1">
-                      Backend Development
-                    </h3>
-                    <p className="text-[#9ca3af] text-[14px] leading-[1.6]">
-                      Powerful systems behind the scenes, Proper professionally managable.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Card 4 */}
-              <Link to="/saas-services" className="block">
-                <div className="flex flex-col justify-between bg-gradient-to-b from-[#0b0b0b] to-[#050505] border border-[#1f1f1f] rounded-2xl p-6 min-h-[200px] hover:border-[#22d3ee]/30 transition-colors">
-                  <div className="text-[#06b6d4] mb-6">
-                    <Code2 size={22} />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-[17px] font-semibold mb-1">
-                      SaaS Model
-                    </h3>
-                    <p className="text-[#9ca3af] text-[14px] leading-[1.6]">
-                      Cloud-ready SaaS products engineered to scale with your business and future needs.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Card 5 */}
-              <Link to="/custom-software-services" className="block">
-                <div className="flex flex-col justify-between bg-gradient-to-b from-[#0b0b0b] to-[#050505] border border-[#1f1f1f] rounded-2xl p-6 min-h-[200px] hover:border-[#22d3ee]/30 transition-colors">
-                  <div className="text-[#06b6d4] mb-6">
-                    <Pencil size={22} />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-[17px] font-semibold mb-1">
-                      Custom Software Development
-                    </h3>
-                    <p className="text-[#9ca3af] text-[14px] leading-[1.6]">
-                      Custom software built for efficiency and scale.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Card 6 */}
-              <Link to="/api-integration-services" className="block">
-                <div className="flex flex-col justify-between bg-gradient-to-b from-[#0b0b0b] to-[#050505] border border-[#1f1f1f] rounded-2xl p-6 min-h-[200px] hover:border-[#22d3ee]/30 transition-colors">
-                  <div className="text-[#06b6d4] mb-6">
-                    <Plug size={22} />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-[17px] font-semibold mb-1">
-                      API & Third-Party Integrations
-                    </h3>
-                    <p className="text-[#9ca3af] text-[14px] leading-[1.6]">
-                      Systems that communicate seamlessly, perfectly and professionally.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-
-          </motion.div>
-        </div>
-      </section>
+      <ServicesSection />
 
       {/* ========== PROCEDURE PLAN SECTION ========== */}
       <ProcedurePlan />

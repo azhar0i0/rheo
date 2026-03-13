@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 export default function OurWorks() {
   return (
-    <section className="bg-black text-white px-6 lg:px-24 md:py-32 mt-24 mx-auto" style={{width:'90%'}}>
+    <section className="bg-black text-white px-2 md:px-24 mt-24 mx-auto" style={{width:'90%'}}>
       {/* Header Line */}
       <div className="flex items-center gap-4 mb-24">
         <span className="text-sm text-gray-400">⬤ ‎  Works </span>
@@ -49,9 +49,9 @@ function WorkRow({ title, subtitle, tech, focus }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
       viewport={{ once: true }}
-      className="relative mt-24 mb-24">
+      className="relative md:mt-24 mb-24">
       {/* Row Content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-8 py-2 md:py-16">
         {/* Left */}
         <h3 className="w-1/3 p-4 text-xl lg:text-2xl font-bold">
           {title}
@@ -74,7 +74,7 @@ function WorkRow({ title, subtitle, tech, focus }) {
       </div>
 
       {/* FULL-WIDTH DIVIDER */}
-      <div className="relative h-px bg-gray-200 mt-24">
+      <div className="relative h-px bg-gray-200 md:mt-24 mt-8">
         <hr />
         {/* Circle */}
         <span

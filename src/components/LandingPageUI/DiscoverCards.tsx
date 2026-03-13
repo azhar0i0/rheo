@@ -51,7 +51,6 @@ const cards = [
 ];
 
 const Card = ({ card, index, progress, totalCards }) => {
-  // Logic from the "Source" file to ensure exact motion
   const isLast = index === totalCards - 1;
   const start = index * (1 / totalCards);
   const end = (index + 1) * (1 / totalCards);
@@ -61,21 +60,18 @@ const Card = ({ card, index, progress, totalCards }) => {
   const opacityRaw = useTransform(progress, [start, end - 0.10, end], [1, 1, isLast ? 1 : 0]);
   const rotateRaw = useTransform(progress, [start, end - 0.10, end], [0, 0, isLast ? 0 : -5]);
 
-  // Physics (Spring) for that smooth "Source" feel
   const springConfig = { stiffness: 500, damping: 60, mass: 0.01 };
   const scale = useSpring(scaleRaw, springConfig);
   const opacity = useSpring(opacityRaw, springConfig);
   const rotate = useSpring(rotateRaw, springConfig);
 
   return (
-    // Wrapper height controls the spacing between cards appearing
     <div className="h-[80vh] flex items-center justify-center sticky top-0 px-4">
       <motion.div
         style={{
           scale,
           opacity,
           rotate,
-          // Stacking offset logic
           top: `calc(5% + ${index * 25}px)`, 
         }}
         className="relative w-full max-w-6xl h-[65vh] md:h-[550px] rounded-[30px] overflow-hidden bg-[#0a0a0a] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.5)] flex flex-col"
@@ -102,7 +98,6 @@ const Card = ({ card, index, progress, totalCards }) => {
                   {card.title}
                 </h3>
              </div>
-             {/* Hidden on small mobile, visible on larger */}
              <div className="hidden md:block">
                 <ul className="space-y-2">
                   {card.properties.map((prop, i) => (
@@ -152,7 +147,6 @@ export default function DiscoverCards() {
 
   return (
     <main ref={container} className="relative bg-black mb-48">
-      {/* Intro Space - Matches the "Problem" file spacing */}
       <div className="h-[20vh] md:h-[30vh] flex flex-col items-center justify-center text-center px-4 pt-10">
         <h2 className="text-red-500 font-bold tracking-[0.2em] text-xs uppercase mb-4">
           Our Capabilities
