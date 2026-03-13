@@ -3,12 +3,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 // Import images
 import heroAbstract from '@/assets/hero-abstract.avif';
-import webDevTeam from '@/assets/web-dev-team.jpg';
-import mobileDev from '@/assets/mobile-dev.jpg';
-import uiUxDesign from '@/assets/ui-ux-design.jpg';
-import cloudSolutions from '@/assets/cloud-solutions.jpg';
-import devops from '@/assets/devops.jpg';
-import flowFunction from '@/assets/flow-function.jpg';
 // UI Components
 import Header from '@/components/LandingPageUI/Header';
 import PressableButton from '@/components/ui/PressableButton';
@@ -22,6 +16,7 @@ import WorkflowSection from '@/components/LandingPageUI/WorkflowSection';
 import Footer from '@/components/Footer';
 import TextScroll from '@/components/LandingPageUI/TextScroll';
 import ServicesSection from './Services';
+import HeroSection from '@/components/Home/hero';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -58,69 +53,7 @@ const Index = () => {
       <Header />
 
       {/* ========== HERO SECTION ========== */}
-      <section className="relative flex min-h-[100svh] w-full items-center overflow-hidden pt-20 md:pt-0">
-
-        {/* Background layer */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <img
-            src={heroAbstract}
-            alt=""
-            role="presentation"
-            className="h-full w-full object-cover object-center opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/40" />
-        </div>
-
-        {/* Unified Content layer */}
-        <div className="relative z-10 w-full mx-auto max-w-7xl px-6 md:px-12">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="mx-auto max-w-[92%] text-left md:max-w-4xl md:text-center"
-          >
-            {/* Eyebrow */}
-            <motion.span
-              variants={itemVariants}
-              className="mb-4 inline-block text-xs font-semibold tracking-widest text-[#1fb6ff] uppercase md:text-sm"
-            >
-              Software Development Studio
-            </motion.span>
-
-            {/* Headline */}
-            <motion.h1
-              variants={itemVariants}
-              className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl lg:text-7xl"
-            >
-              From architecture{" "}
-              <br className="hidden md:block" />
-              <span className="md:hidden">to deployment — </span>
-              <span className="hidden md:inline">to deployment </span>
-              <span className="inline-flex items-center gap-2 md:mt-2">
-                <span className="hidden text-white/50 md:inline">—</span>
-                <span className="text-[#1fb6ff]">flawlessly executed.</span>
-              </span>
-            </motion.h1>
-
-            {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="mt-6 max-w-[320px] text-base leading-relaxed text-white/70 md:mx-auto md:max-w-xl md:text-lg"
-            >
-              Full-service software development delivering web, mobile, cloud,
-              and custom solutions — from concept to scale.
-            </motion.p>
-
-            {/* CTA */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-10 flex justify-start md:justify-center"
-            >
-              <PressableButton />
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* ========== HERO LOOP ========== */}
       <HeroLoop />
