@@ -81,7 +81,7 @@ const Header = () => {
                 className="h-8 w-8 object-contain transition-transform duration-500 group-hover:rotate-12 md:h-10 md:w-10"
               />
               <span className="text-2xl font-bold tracking-tight text-white md:text-3xl">
-                heo.
+                heo
               </span>
             </Link>
 
