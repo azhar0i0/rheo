@@ -3,59 +3,55 @@ import { Link } from "react-router-dom";
 
 const PressableButton = () => {
   return (
-    <motion.div className="relative inline-block">
-      {/* Bottom depth layer (never moves) */}
+    <Link to="/start-project" className="group relative inline-block outline-none cursor-pointer w-48">
+      
+      {/* 1. Bottom Depth Layer */}
       <div
         className="
-          absolute inset-0
-          translate-y-[10px]
-          rounded-full
-          bg-[#406581]
-          border-2 border-black
+          absolute inset-0 
+          translate-y-[14px] 
+          rounded-full 
+          bg-[#183650] 
+          border-[2px] border-black
         "
       />
 
-      {/* Middle rim layer (never moves) */}
+      {/* 2. Middle Rim Layer */}
       <div
         className="
-    absolute inset-0
-    translate-y-[6px]
-    rounded-full
-    bg-[#4BB3FD]
-    border-2 border-black
-  "
+          absolute inset-0 
+          translate-y-[10px] 
+          rounded-full 
+          bg-[#41b2ff] 
+          border-[2px] border-black 
+          overflow-hidden 
+          flex justify-between px-6
+        "
       >
-        <span className="pointer-events-none absolute inset-y-[0px] left-1/2 -translate-x-1/2 flex justify-content-between gap-[130px]">
-          <span className="w-[2px] rounded-full bg-black/60" />
-          <span className="w-[2px] rounded-full bg-black/60" />
-        </span>
+        <div className="w-[2px] h-full bg-black" />
+        <div className="w-[2px] h-full bg-black" />
       </div>
 
-      {/* Top face (only this moves) */}
+      {/* 3. Top Face */}
       <motion.div
-        whileTap={{ y: 4 }}
-        transition={{ type: "spring", stiffness: 600, damping: 30 }}
-        className="relative z-10"
+        whileHover={{ y: 2 }}
+        whileTap={{ y: 7 }}
+        transition={{ type: "spring", stiffness: 500, damping: 25 }}
+        className="
+          relative z-10 
+          inline-flex items-center justify-center 
+          rounded-full 
+          bg-[#008cff] 
+          border-[2px] border-black 
+          px-6 py-4 w-full
+        "
       >
-        <Link
-          to="/start-project"
-          className="
-            inline-flex items-center justify-center
-            rounded-full
-            bg-[#0496FF]
-            border-2 border-black
-            px-6 py-4 mb-[1px]
-            text-[15px]
-            text-white
-            tracking-wide
-            select-none
-            font-bold
-          "
-        >
+        <span className="text-sm font-semibold tracking-wide text-white select-none">
           Start Your Project
-        </Link>
+        </span>
       </motion.div>
-    </motion.div>
+      
+    </Link>
   );
 };
 
