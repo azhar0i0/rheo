@@ -61,6 +61,12 @@ const Index = () => {
       {/* ========== SERVICES SECTION ========== */}
       <ServicesSection />
 
+      {/* ========== HERO LOOP ========== */}
+      <HeroLoop />
+
+      {/* ========== SERVICES SECTION ========== */}
+      <ServicesSection />
+
       {/* ========== PROCEDURE PLAN SECTION ========== */}
       <ProcedurePlan />
 
