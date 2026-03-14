@@ -7,6 +7,7 @@ import blogAi from '@/assets/blog-ai.jpg';
 import blogRobot from '@/assets/blog-robot.jpg';
 import blogNetwork from '@/assets/blog-network.jpg';
 import cloudSolutions from '@/assets/cloud-solutions.jpg';
+import { Link } from 'react-router-dom';
 
 const Blog = () => {
   const blogPosts = [
@@ -65,8 +66,8 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] selection:bg-[#1fb6ff]/30">
-      
-      <PageHeader 
+
+      <PageHeader
         title="The Rheo Intel"
         subtitle="Insights & Architecture"
         description="Ideas, stories, and strategies from the creative edge covering design, development, and the tools that bring bold digital work to life."
@@ -80,55 +81,57 @@ const Blog = () => {
               const isEven = index % 2 === 0;
 
               return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="group flex flex-col items-center gap-12 lg:flex-row lg:gap-24"
-                >
-                  {/* Image Half */}
-                  <div className={`w-full lg:w-1/2 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0a] shadow-2xl transition-all duration-700 group-hover:border-[#1fb6ff]/30 group-hover:shadow-[0_0_40px_rgba(31,182,255,0.15)] md:rounded-[3rem]">
-                      <img
-                        src={post.image}
-                        alt="Blog insight"
-                        className="h-full w-full object-cover opacity-60 grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
-                      />
-                      {/* Glassmorphic Top Badge */}
-                      <div className="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-white/20 bg-black/40 px-4 py-2 backdrop-blur-md">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#1fb6ff] shadow-[0_0_10px_#1fb6ff]" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-white">
-                          {post.category}
-                        </span>
+                <Link to="/blog-detail">
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="group flex flex-col items-center gap-12 lg:flex-row lg:gap-24"
+                  >
+                    {/* Image Half */}
+                    <div className={`w-full lg:w-1/2 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0a] shadow-2xl transition-all duration-700 group-hover:border-[#1fb6ff]/30 group-hover:shadow-[0_0_40px_rgba(31,182,255,0.15)] md:rounded-[3rem]">
+                        <img
+                          src={post.image}
+                          alt="Blog insight"
+                          className="h-full w-full object-cover opacity-60 grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
+                        />
+                        {/* Glassmorphic Top Badge */}
+                        <div className="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-white/20 bg-black/40 px-4 py-2 backdrop-blur-md">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#1fb6ff] shadow-[0_0_10px_#1fb6ff]" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-white">
+                            {post.category}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Quote / Content Half */}
-                  <div className={`relative flex w-full flex-col lg:w-1/2 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                    {/* Giant Watermark Quote Mark */}
-                    <span className="pointer-events-none absolute -left-8 -top-16 text-[150px] font-serif leading-none text-white/5 transition-colors duration-500 group-hover:text-[#1fb6ff]/10 md:-left-12 md:-top-20 md:text-[200px]">
-                      "
-                    </span>
-                    
-                    <div className="relative z-10">
-                      <p className="mb-8 text-xl font-medium leading-relaxed text-gray-300 md:text-2xl lg:text-3xl lg:leading-[1.4]">
-                        {post.quote}
-                      </p>
-                      
-                      <div className="flex items-center justify-between border-t border-white/10 pt-6 transition-colors duration-500 group-hover:border-[#1fb6ff]/30">
-                        <span className="text-sm font-semibold tracking-widest text-gray-500 uppercase">
-                          {post.readTime}
-                        </span>
-                        <button className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5 transition-all duration-300 group-hover:bg-[#1fb6ff] group-hover:text-black">
-                           <ArrowUpRight className="h-5 w-5 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-black" />
-                        </button>
+                    {/* Quote / Content Half */}
+                    <div className={`relative flex w-full flex-col lg:w-1/2 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
+                      {/* Giant Watermark Quote Mark */}
+                      <span className="pointer-events-none absolute -left-8 -top-16 text-[150px] font-serif leading-none text-white/5 transition-colors duration-500 group-hover:text-[#1fb6ff]/10 md:-left-12 md:-top-20 md:text-[200px]">
+                        "
+                      </span>
+
+                      <div className="relative z-10">
+                        <p className="mb-8 text-xl font-medium leading-relaxed text-gray-300 md:text-2xl lg:text-3xl lg:leading-[1.4]">
+                          {post.quote}
+                        </p>
+
+                        <div className="flex items-center justify-between border-t border-white/10 pt-6 transition-colors duration-500 group-hover:border-[#1fb6ff]/30">
+                          <span className="text-sm font-semibold tracking-widest text-gray-500 uppercase">
+                            {post.readTime}
+                          </span>
+                          <button className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5 transition-all duration-300 group-hover:bg-[#1fb6ff] group-hover:text-black">
+                            <ArrowUpRight className="h-5 w-5 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-black" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </Link>
               );
             })}
           </div>
@@ -138,7 +141,7 @@ const Blog = () => {
       {/* --- SWISS GRID WORKS SECTION --- */}
       <section className="relative overflow-hidden border-t border-white/10 bg-[#020202] py-24 md:py-32">
         <div className="mx-auto w-full max-w-7xl px-6 md:px-12">
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -190,7 +193,7 @@ const Blog = () => {
 
                 {/* 3. Tags */}
                 <div className="hidden flex-col md:flex">
-                   <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-600">Specs</span>
+                  <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-600">Specs</span>
                   <p className="text-sm text-gray-400">
                     {work.tags.join(' · ')}
                   </p>

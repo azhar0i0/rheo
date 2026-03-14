@@ -1,8 +1,5 @@
 import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-// Import images
-import heroAbstract from '@/assets/hero-abstract.avif';
 // UI Components
 import Header from '@/components/LandingPageUI/Header';
 import PressableButton from '@/components/ui/PressableButton';
@@ -54,12 +51,6 @@ const Index = () => {
 
       {/* ========== HERO SECTION ========== */}
       <HeroSection />
-
-      {/* ========== HERO LOOP ========== */}
-      <HeroLoop />
-
-      {/* ========== SERVICES SECTION ========== */}
-      <ServicesSection />
 
       {/* ========== HERO LOOP ========== */}
       <HeroLoop />

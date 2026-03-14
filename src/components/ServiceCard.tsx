@@ -8,9 +8,10 @@ interface ServiceCardProps {
   image: string;
   tags: string[];
   reverse?: boolean;
+  link: string;
 }
 
-const ServiceCard = ({ title, description, image, tags, reverse = false }: ServiceCardProps) => {
+const ServiceCard = ({ title, description, image, link, tags, reverse = false }: ServiceCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -48,7 +49,7 @@ const ServiceCard = ({ title, description, image, tags, reverse = false }: Servi
 
         {/* Creative CTA Button */}
         <Link 
-          to="/start-project" 
+          to={link}
           className="flex w-max items-center gap-4 outline-none"
         >
           <span className="text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 group-hover:text-[#1fb6ff]">
@@ -63,7 +64,7 @@ const ServiceCard = ({ title, description, image, tags, reverse = false }: Servi
       {/* --- IMAGE HALF --- */}
       <div className={`w-full lg:w-1/2 ${reverse ? 'lg:order-1' : 'lg:order-2'}`}>
         
-        <Link to="/start-project" className="relative block aspect-[4/3] w-full overflow-hidden rounded-[32px] border border-white/5 bg-[#050505] transition-all duration-700 group-hover:border-[#1fb6ff]/30 group-hover:shadow-[0_0_40px_rgba(31,182,255,0.1)]">
+        <Link to={link} className="relative block aspect-[4/3] w-full overflow-hidden rounded-[32px] border border-white/5 bg-[#050505] transition-all duration-700 group-hover:border-[#1fb6ff]/30 group-hover:shadow-[0_0_40px_rgba(31,182,255,0.1)]">
           <img
             src={image}
             alt={title}
